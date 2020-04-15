@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public bool LoggedIn = false;
+    static public bool LoggedIn = false;
     public string Username = "";
 
     public void SetUserDetails(bool loggedIn, string username)
     {
         LoggedIn = loggedIn;
         Username = username;
+    }
+
+    static public bool CheckLoggedIn()
+    {
+        return LoggedIn;
     }
 }

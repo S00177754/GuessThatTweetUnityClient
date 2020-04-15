@@ -24,16 +24,16 @@ public class SignupMenuController : MonoBehaviour
             ConfirmPassword = PasswordField.text
         };
 
-        if (GuessThatTweetAPIHelper.RegisterUser(user))
+        if (ASPNetAPIHelper.RegisterUser(user))
         {
             ErrorMessage.text = "Success Register";
             GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().SetUserDetails(true, UsernameField.text);
             MenusController.SetMenuState(MenuState.Game);
-            GuessThatTweetAPIHelper.Login(user.Email, user.Password);
+            ASPNetAPIHelper.Login(user.Email, user.Password);
         }
         else
         {
-            ErrorMessage.text = GuessThatTweetAPIHelper.ErrorMessage;
+            ErrorMessage.text = ASPNetAPIHelper.ErrorMessage;
         }
     }
 }

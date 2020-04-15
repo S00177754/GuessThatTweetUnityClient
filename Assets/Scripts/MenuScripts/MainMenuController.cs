@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class MainMenuController : MonoBehaviour
 {
-    public enum MenuState { Disable,StartUp,LogIn,SignUp,Game}
+    public enum MenuState { Disable,StartUp,LogIn,SignUp,Game,TimeTrial}
 
     public GameObject StartUpMenu;
     public GameObject LogInMenu;
     public GameObject SignUpMenu;
     public GameObject GameMenu;
+    public GameObject TimeTrialMenu;
 
     private MenuState menuState;
 
@@ -34,6 +35,7 @@ public class MainMenuController : MonoBehaviour
                 LogInMenu.SetActive(false);
                 SignUpMenu.SetActive(false);
                 GameMenu.SetActive(false);
+                TimeTrialMenu.SetActive(false);
                 break;
 
             case MenuState.LogIn:
@@ -41,6 +43,7 @@ public class MainMenuController : MonoBehaviour
                 LogInMenu.SetActive(true);
                 SignUpMenu.SetActive(false);
                 GameMenu.SetActive(false);
+                TimeTrialMenu.SetActive(false);
                 break;
 
             case MenuState.SignUp:
@@ -48,6 +51,7 @@ public class MainMenuController : MonoBehaviour
                 LogInMenu.SetActive(false);
                 SignUpMenu.SetActive(true);
                 GameMenu.SetActive(false);
+                TimeTrialMenu.SetActive(false);
                 break;
 
             case MenuState.Game:
@@ -55,6 +59,15 @@ public class MainMenuController : MonoBehaviour
                 LogInMenu.SetActive(false);
                 SignUpMenu.SetActive(false);
                 GameMenu.SetActive(true);
+                TimeTrialMenu.SetActive(false);
+                break;
+
+            case MenuState.TimeTrial:
+                StartUpMenu.SetActive(false);
+                LogInMenu.SetActive(false);
+                SignUpMenu.SetActive(false);
+                GameMenu.SetActive(false);
+                TimeTrialMenu.SetActive(true);
                 break;
 
             case MenuState.Disable:
@@ -62,7 +75,7 @@ public class MainMenuController : MonoBehaviour
                 LogInMenu.SetActive(false);
                 SignUpMenu.SetActive(false);
                 GameMenu.SetActive(false);
-                GameMenu.SetActive(false);
+                TimeTrialMenu.SetActive(false);
                 break;
         }
     }
@@ -85,7 +98,11 @@ public class MainMenuController : MonoBehaviour
                 break;
 
             case "game":
-                SetMenuState(MenuState.SignUp);
+                SetMenuState(MenuState.Game);
+                break;
+
+            case "timetrial":
+                SetMenuState(MenuState.TimeTrial);
                 break;
 
             case "disable":

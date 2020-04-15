@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,15 +37,15 @@ public class CustomGameDTO
 {
     public float TimeLimit;
 
-    public string TweetURL1;
+    public string PokemonURL1;
 
-    public string TweetURL2;
+    public string PokemonURL2;
 
-    public string TweetURL3;
+    public string PokemonURL3;
 
-    public string TweetURL4;
+    public string PokemonURL4;
 
-    public string TweetURL5;
+    public string PokemonURL5;
 
     public string CreatedBy;
 
@@ -73,6 +74,5 @@ public class Token
 
     public string refresh_token { get; set; }
 }
-
 
 

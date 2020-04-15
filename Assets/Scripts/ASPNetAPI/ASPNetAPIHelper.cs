@@ -12,7 +12,7 @@ using UnityEngine.Networking;
 
 public enum AuthenticationStatus { None, Ok, Invalid, Failed }
 
-public static class GuessThatTweetAPIHelper 
+public static class ASPNetAPIHelper 
 {
     static public string BaseWebAddress = "https://localhost:44310/";
     static public string GameToken = "";

@@ -14,7 +14,7 @@ public class LoginMenuController : MonoBehaviour
 
     public void Login()
     {
-        if (GuessThatTweetAPIHelper.Login(usernameField.text, passwordField.text))
+        if (ASPNetAPIHelper.Login(usernameField.text, passwordField.text))
         {
             errorMessage.text = "";
             GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().SetUserDetails(true, usernameField.text);
@@ -22,7 +22,7 @@ public class LoginMenuController : MonoBehaviour
         }
         else
         {
-            errorMessage.text = GuessThatTweetAPIHelper.ErrorMessage;
+            errorMessage.text = ASPNetAPIHelper.ErrorMessage;
         }
     }
 }
