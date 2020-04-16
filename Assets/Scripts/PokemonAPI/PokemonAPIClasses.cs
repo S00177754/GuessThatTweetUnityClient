@@ -88,6 +88,42 @@ public class PokemonEggGroup
 
     [JsonProperty("url")]
     public string URL;
+
+    static public string FormatName(string eggGroup)
+    {
+        string eggGroupName;
+
+        switch (eggGroup)
+        {
+            case "water1":
+                eggGroupName = "Water 1";
+                break;
+
+            case "humanshape":
+                eggGroupName = "Humanoid";
+                break;
+
+            case "water2":
+                eggGroupName = "Water 2";
+                break;
+
+            case "water3":
+                eggGroupName = "Water 3";
+                break;
+
+            case "no-eggs":
+                eggGroupName = "No Egg Group";
+                break;
+
+            default:
+                eggGroupName = eggGroup;
+                break;
+        }
+
+        eggGroupName = char.ToUpper(eggGroupName[0]) + eggGroupName.Substring(1);
+
+        return eggGroupName;
+    }
 }
 
 public class PokemonEvolutionChain
@@ -142,6 +178,46 @@ public class PokemonGeneration
 
     [JsonProperty("url")]
     public string URL;
+
+    static public string FormatName(string generationName)
+    {
+        string formattedName = "Undefined";
+        switch (generationName)
+        {
+            case "generation-i":
+                formattedName = "Generation I";
+                break;
+
+            case "generation-ii":
+                formattedName = "Generation II";
+                break;
+
+            case "generation-iii":
+                formattedName = "Generation III";
+                break;
+
+            case "generation-iv":
+                formattedName = "Generation IV";
+                break;
+
+            case "generation-v":
+                formattedName = "Generation V";
+                break;
+
+            case "generation-vi":
+                formattedName = "Generation VI";
+                break;
+
+            case "generation-vii":
+                formattedName = "Generation VII";
+                break;
+
+            default:
+                break;
+        }
+
+        return formattedName;
+    }
 }
 
 public class PokemonGrowthRate
@@ -184,4 +260,43 @@ public class PokemonSpeciesResults
 
     [JsonProperty("url")]
     public string URL;
+}
+
+public class PokemonAttributeSearch<T>
+{
+    [JsonProperty("count")]
+    public int Count;
+
+    [JsonProperty("next")]
+    public string NextPageURL;
+
+    [JsonProperty("previous")]
+    public string PrevPageURL;
+
+    [JsonProperty("results")]
+    public List<T> Results;
+
+    public List<string> FormatEggResults()
+    {
+        List<string> info = (Results as List<PokemonEggGroup>).Select(e => e.Name).ToList();
+
+        for(int i = 0; i < info.Count; i++)
+        {
+            info[i] = PokemonEggGroup.FormatName(info[i]);
+        }
+
+        return info;
+    }
+
+    public List<string> FormatGenerationResults()
+    {
+        List<string> info = (Results as List<PokemonGeneration>).Select(e => e.Name).ToList();
+
+        for (int i = 0; i < info.Count; i++)
+        {
+            info[i] = PokemonGeneration.FormatName(info[i]);
+        }
+
+        return info;
+    }
 }

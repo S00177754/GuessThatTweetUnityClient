@@ -37,4 +37,33 @@ public static class PokemonAPIHelper
             MaxRange = resultContent.Count;
         }
     }
+
+    static public List<string> GetEggGroups()
+    {
+        using (var client = new HttpClient())
+        {
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var response = client.GetAsync(BaseWebAddress + "egg-group/").Result;
+            var resultContent = response.Content.ReadAsAsync<PokemonAttributeSearch<PokemonEggGroup>>(new[] { new JsonMediaTypeFormatter() }).Result;
+
+            return resultContent.FormatEggResults();
+        }
+    }
+
+    static public List<string> GetGenerations()
+    {
+        using (var client = new HttpClient())
+        {
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var response = client.GetAsync(BaseWebAddress + "generation/").Result;
+            var resultContent = response.Content.ReadAsAsync<PokemonAttributeSearch<PokemonGeneration>>(new[] { new JsonMediaTypeFormatter() }).Result;
+
+            return resultContent.FormatGenerationResults();
+        }
+    }
+
 }
