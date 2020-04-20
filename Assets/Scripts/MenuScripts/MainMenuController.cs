@@ -7,6 +7,7 @@ public class MainMenuController : MonoBehaviour
 {
     public enum MenuState { Disable,StartUp,LogIn,SignUp,Game,TimeTrial}
 
+    public GameObject TitleText;
     public GameObject StartUpMenu;
     public GameObject LogInMenu;
     public GameObject SignUpMenu;
@@ -31,6 +32,7 @@ public class MainMenuController : MonoBehaviour
         {
             default:
             case MenuState.StartUp:
+                TitleText.SetActive(true);
                 StartUpMenu.SetActive(true);
                 LogInMenu.SetActive(false);
                 SignUpMenu.SetActive(false);
@@ -39,6 +41,7 @@ public class MainMenuController : MonoBehaviour
                 break;
 
             case MenuState.LogIn:
+                TitleText.SetActive(true);
                 StartUpMenu.SetActive(false);
                 LogInMenu.SetActive(true);
                 SignUpMenu.SetActive(false);
@@ -47,6 +50,7 @@ public class MainMenuController : MonoBehaviour
                 break;
 
             case MenuState.SignUp:
+                TitleText.SetActive(true);
                 StartUpMenu.SetActive(false);
                 LogInMenu.SetActive(false);
                 SignUpMenu.SetActive(true);
@@ -55,6 +59,7 @@ public class MainMenuController : MonoBehaviour
                 break;
 
             case MenuState.Game:
+                TitleText.SetActive(true);
                 StartUpMenu.SetActive(false);
                 LogInMenu.SetActive(false);
                 SignUpMenu.SetActive(false);
@@ -63,6 +68,7 @@ public class MainMenuController : MonoBehaviour
                 break;
 
             case MenuState.TimeTrial:
+                TitleText.SetActive(true);
                 StartUpMenu.SetActive(false);
                 LogInMenu.SetActive(false);
                 SignUpMenu.SetActive(false);
@@ -71,6 +77,7 @@ public class MainMenuController : MonoBehaviour
                 break;
 
             case MenuState.Disable:
+                TitleText.SetActive(false);
                 StartUpMenu.SetActive(false);
                 LogInMenu.SetActive(false);
                 SignUpMenu.SetActive(false);

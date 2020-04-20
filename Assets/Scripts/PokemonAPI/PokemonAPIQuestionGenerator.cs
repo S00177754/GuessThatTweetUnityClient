@@ -16,6 +16,21 @@ public class PokemonAPIQuestionGenerator : MonoBehaviour
         Generations = PokemonAPIHelper.GetGenerations();
     }
 
+    public void GeneratePokemonQuestions(string pokemonName)
+    {
+        ResetQuestions();
+
+        PokemonSpeciesDataObject pokeDTO = PokemonAPIHelper.GetPokemon(pokemonName);
+        if(pokeDTO != null)
+        {
+            QueueQuestion(pokeDTO, QuestionType.Name);
+            QueueQuestion(pokeDTO, QuestionType.EggGroup);
+            QueueQuestion(pokeDTO, QuestionType.FlavorText);
+            QueueQuestion(pokeDTO, QuestionType.Generation);
+            QueueQuestion(pokeDTO, QuestionType.PokedexNumber);
+        }
+    }
+
     public void QueueQuestion(PokemonSpeciesDataObject dataObj, QuestionType type)
     {
         Questions.Enqueue(new PokemonQuestion(dataObj, type));

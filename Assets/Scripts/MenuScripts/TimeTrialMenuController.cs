@@ -5,23 +5,24 @@ using TMPro;
 
 public class TimeTrialMenuController : MonoBehaviour
 {
-    public TMP_InputField TwitterUsernameInput;
-    public TMP_Dropdown RoundSelectionDropdown;
+    public TMP_InputField PokemonNameInput;
+    public GameObject gameManagerObj;
+    private GameManager gameManager;
+    private PokemonAPIQuestionGenerator questionGen;
+
+    private void Start()
+    {
+        questionGen = gameManager.GetComponent<PokemonAPIQuestionGenerator>();
+        gameManager = gameManager.GetComponent<GameManager>();
+    }
+
 
     public void StartGame()
     {
-        //Check if username is valid
-
-        switch (RoundSelectionDropdown.value)
+        questionGen.GeneratePokemonQuestions(PokemonNameInput.text);
+        if(questionGen.Questions.Count > 0)
         {
-            case 0: //5 Rounds
-                break;
-
-            case 1: //10 Rounds
-                break;
-
-            case 2: //15 Rounds
-                break;
+            gameManager.SetGameState(GameState.Playing);
         }
     }
 }
