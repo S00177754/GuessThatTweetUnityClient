@@ -12,14 +12,34 @@ public class QuestionsController : MonoBehaviour
     public GameObject FillInTheBlankQuestion;
 
     public Image spriteToDisplay;
+    private PokemonAPIQuestionGenerator questionGen;
 
-    public void SetSprite(string url)
+    public int QuestionCount = 5;
+    private float Timer = 0f;
+    private float LastQuestionAnsweredAt = 0f;
+    private bool TimerActive = false;
+
+    private void Start()
     {
-        StartCoroutine(DownloadSprite(url));
+        questionGen = GetComponent<PokemonAPIQuestionGenerator>();
     }
 
-    IEnumerator DownloadSprite(string url)
+    private void Update()
     {
+        if (TimerActive)
+        {
+            Timer += Time.deltaTime * 1;
+        }
+    }
+
+    public void SetSprite(int pokedexNum)
+    {
+        StartCoroutine(DownloadSprite(pokedexNum));
+    }
+
+    IEnumerator DownloadSprite(int pokedexNum)
+    {
+        string url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + pokedexNum + ".png";
         UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(url);
         DownloadHandler handler = webRequest.downloadHandler;
 
@@ -43,6 +63,32 @@ public class QuestionsController : MonoBehaviour
             {
                 spriteToDisplay.sprite = sprite;
             }
+        }
+    }
+
+    public void NextQuestion()
+    {
+        PokemonQuestion question = questionGen.GetNextQuestion();
+        QuestionCount--;
+
+        switch (question.QuestionType)
+        {
+            case QuestionType.Name:
+            case QuestionType.FlavorText:
+                //MCQQuestion.GetComponent<FillTextController>().SetQuestion(question);
+                break;
+
+            case QuestionType.PokedexNumber:
+                //MCQQuestion.GetComponent<PNQController>().SetQuestion(question);
+                break;
+
+
+            case QuestionType.EggGroup:
+            case QuestionType.Generation:
+                MCQQuestion.GetComponent<MCQController>().SetQuestion(question);
+                break;
+
+           
         }
     }
 }

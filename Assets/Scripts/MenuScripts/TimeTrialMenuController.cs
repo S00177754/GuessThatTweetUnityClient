@@ -23,6 +23,7 @@ public class TimeTrialMenuController : MonoBehaviour
         if(questionGen.Questions.Count > 0)
         {
             gameManager.SetGameState(GameState.Playing);
+            
         }
     }
 }

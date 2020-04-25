@@ -12,6 +12,7 @@ public class PokemonQuestion
     public string Answer;
     public List<string> Choices;
     public bool IsMultipleChoice;
+    public float Score;
 
     public PokemonQuestion()
     {
@@ -69,4 +70,8 @@ public class PokemonQuestion
         return choices;
     }
 
+    public void CalculateScore(int timeElapsed)
+    {
+        Score = (1000 - timeElapsed);
+    }
 }
