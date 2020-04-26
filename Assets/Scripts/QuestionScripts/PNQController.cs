@@ -1,18 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PNQController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private PokemonQuestion PokeQuestion;
+    public TMP_InputField InputField;
+    public TMP_Text QuestionText;
+    public QuestionsController questionController;
+
+    public void SetQuestion(PokemonQuestion question)
     {
-        
+        PokeQuestion = question;
+        QuestionText.text = PokeQuestion.Question;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SubmitAnswer()
     {
-        
+        if(PokeQuestion.Answer == InputField.text)
+        {
+            PokeQuestion.CalculateScore(questionController.TimerLap());
+        }
+        else
+        {
+            PokeQuestion.Score = 0;
+        }
+
+        questionController.NextQuestion();
     }
 }

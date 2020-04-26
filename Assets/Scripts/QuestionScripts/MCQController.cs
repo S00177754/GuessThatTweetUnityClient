@@ -9,6 +9,7 @@ public class MCQController : MonoBehaviour
 {
     private PokemonQuestion Question;
     public List<Button> Buttons = new List<Button>(4);
+    public TMP_Text QuestionText;
     public QuestionsController questionController;
 
     public void SetQuestion(PokemonQuestion question)
@@ -18,17 +19,20 @@ public class MCQController : MonoBehaviour
         {
             Buttons[i].GetComponentInChildren<TMP_Text>().text = question.Choices[i];
         }
+        QuestionText.text = Question.Question;
     }
 
     public void SelectAnswer()
     {
         if(EventSystem.current.currentSelectedGameObject.GetComponentInChildren<TMP_Text>().text == Question.Answer)
         {
-            //correct
+            Question.CalculateScore(questionController.TimerLap());
         }
         else
         {
-            //wrong
+            Question.Score = 0;
         }
+
+        questionController.NextQuestion();
     }
 }

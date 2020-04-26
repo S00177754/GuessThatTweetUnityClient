@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
+public enum QuestionGroup { MCQ, PokedexNum, FillInBlank}
+
 [RequireComponent(typeof(PokemonAPIQuestionGenerator))]
 public class QuestionsController : MonoBehaviour
 {
@@ -29,6 +31,30 @@ public class QuestionsController : MonoBehaviour
         if (TimerActive)
         {
             Timer += Time.deltaTime * 1;
+        }
+    }
+
+    public void SetActiveQuestionGroup(QuestionGroup group)
+    {
+        switch (group)
+        {
+            case QuestionGroup.MCQ:
+                MCQQuestion.SetActive(true);
+                PokedexNumberQuestion.SetActive(false);
+                FillInTheBlankQuestion.SetActive(false);
+                break;
+
+            case QuestionGroup.PokedexNum:
+                MCQQuestion.SetActive(false);
+                PokedexNumberQuestion.SetActive(true);
+                FillInTheBlankQuestion.SetActive(false);
+                break;
+
+            case QuestionGroup.FillInBlank:
+                MCQQuestion.SetActive(false);
+                PokedexNumberQuestion.SetActive(false);
+                FillInTheBlankQuestion.SetActive(true);
+                break;
         }
     }
 
@@ -66,29 +92,52 @@ public class QuestionsController : MonoBehaviour
         }
     }
 
+    public float TimerLap()
+    {
+        float questionElapsed = Timer - LastQuestionAnsweredAt;
+        LastQuestionAnsweredAt = Timer;
+        return questionElapsed;
+    }
+
+    public void EndGame()
+    {
+
+    }
+
     public void NextQuestion()
     {
-        PokemonQuestion question = questionGen.GetNextQuestion();
-        QuestionCount--;
-
-        switch (question.QuestionType)
+        if (QuestionCount > 0)
         {
-            case QuestionType.Name:
-            case QuestionType.FlavorText:
-                //MCQQuestion.GetComponent<FillTextController>().SetQuestion(question);
-                break;
+            PokemonQuestion question = questionGen.GetNextQuestion();
+            QuestionCount--;
 
-            case QuestionType.PokedexNumber:
-                //MCQQuestion.GetComponent<PNQController>().SetQuestion(question);
-                break;
+            switch (question.QuestionType)
+            {
+                case QuestionType.Name:
+                case QuestionType.FlavorText:
+                    //MCQQuestion.GetComponent<FillTextController>().SetQuestion(question);
+                    SetActiveQuestionGroup(QuestionGroup.FillInBlank);
+                    break;
+
+                case QuestionType.PokedexNumber:
+                    PokedexNumberQuestion.GetComponent<PNQController>().SetQuestion(question);
+                    SetActiveQuestionGroup(QuestionGroup.PokedexNum);
+                    break;
 
 
-            case QuestionType.EggGroup:
-            case QuestionType.Generation:
-                MCQQuestion.GetComponent<MCQController>().SetQuestion(question);
-                break;
+                case QuestionType.EggGroup:
+                case QuestionType.Generation:
+                    MCQQuestion.GetComponent<MCQController>().SetQuestion(question);
+                    SetActiveQuestionGroup(QuestionGroup.MCQ);
+                    break;
 
-           
+
+            }
+
+        }
+        else
+        {
+            EndGame();
         }
     }
 }

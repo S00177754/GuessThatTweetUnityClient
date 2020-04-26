@@ -70,7 +70,7 @@ public class PokemonQuestion
         return choices;
     }
 
-    public void CalculateScore(int timeElapsed)
+    public void CalculateScore(float timeElapsed)
     {
         Score = (1000 - timeElapsed);
     }
