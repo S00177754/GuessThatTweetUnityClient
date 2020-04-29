@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Microsoft.SqlServer.Server;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,10 +14,6 @@ public class PokemonQuestion
     public List<string> Choices;
     public bool IsMultipleChoice;
     public float Score;
-
-    public PokemonQuestion()
-    {
-    }
 
     public PokemonQuestion(PokemonSpeciesDataObject pokemonObj, QuestionType type)
     {
@@ -38,7 +35,7 @@ public class PokemonQuestion
             case QuestionType.Generation:
                 Question = "What generation of games is " + pokeObj.Name + " from?";
                 Answer = PokemonGeneration.FormatName(pokeObj.Generation.Name);
-                Choices = GetRandomChoices(Answer, PokemonAPIQuestionGenerator.EggGroups);
+                Choices = GetRandomChoices(Answer, PokemonAPIQuestionGenerator.Generations);
                 IsMultipleChoice = true;
                 break;
 
@@ -56,8 +53,9 @@ public class PokemonQuestion
                 break;
 
             case QuestionType.FlavorText:
-                Question = "Fill in the blanks.";
-                Answer = pokeObj.FlavorTexts.Where(ft => ft.Language.Name == "en").Select(ft => ft.FlavorText).Single();
+                string[] fixedUp = RemoveWord(pokeObj.FlavorTexts.Where(ft => ft.Language.Name == "en").Take(1).Select(ft => ft.FlavorText).SingleOrDefault());
+                Answer = fixedUp[0];
+                Question = "Fill in the blanks.\n" + fixedUp[1];
                 IsMultipleChoice = false;
                 break;
         }
@@ -73,5 +71,29 @@ public class PokemonQuestion
     public void CalculateScore(float timeElapsed)
     {
         Score = (1000 - timeElapsed);
+    }
+
+    public string FormatFlavorText(string text)
+    {
+        text.Replace("\n", " ");
+        return text;
+    }
+
+    public string[] RemoveWord(string flavorText)
+    {
+        flavorText = FormatFlavorText(flavorText);
+        string[] words = flavorText.Split(' ');
+        int num = Random.Range(0, words.Length);
+
+        string answer = words[num];
+        words[num] = " ______ ";
+
+        string newQuestion = "";
+        foreach (var wrd in words)
+        {
+            newQuestion += (wrd + " ");
+        }
+
+        return new string[]{ answer,newQuestion};
     }
 }

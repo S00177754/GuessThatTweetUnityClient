@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -12,25 +14,28 @@ public class QuestionsController : MonoBehaviour
     public GameObject MCQQuestion;
     public GameObject PokedexNumberQuestion;
     public GameObject FillInTheBlankQuestion;
+    public GameObject ImageDisplay;
+    public TMP_Text TimerDisplay;
 
     public Image spriteToDisplay;
-    private PokemonAPIQuestionGenerator questionGen;
+    public PokemonAPIQuestionGenerator questionGen;
 
     public int QuestionCount = 5;
-    private float Timer = 0f;
+    private float Timer = 300f;
     private float LastQuestionAnsweredAt = 0f;
     private bool TimerActive = false;
 
     private void Start()
     {
-        questionGen = GetComponent<PokemonAPIQuestionGenerator>();
+      
     }
 
     private void Update()
     {
         if (TimerActive)
         {
-            Timer += Time.deltaTime * 1;
+            Timer -= Time.deltaTime * 1;
+            TimerDisplay.text = "Time Left: " + Math.Round(Timer,2).ToString();
         }
     }
 
@@ -56,6 +61,21 @@ public class QuestionsController : MonoBehaviour
                 FillInTheBlankQuestion.SetActive(true);
                 break;
         }
+    }
+
+    public void Activate()
+    {
+        ImageDisplay.SetActive(true);
+        TimerDisplay.gameObject.SetActive(true);
+    }
+
+    public void DeActivate()
+    {
+        MCQQuestion.SetActive(false);
+        FillInTheBlankQuestion.SetActive(false);
+        PokedexNumberQuestion.SetActive(false);
+        ImageDisplay.SetActive(false);
+        TimerDisplay.gameObject.SetActive(false);
     }
 
     public void SetSprite(int pokedexNum)
@@ -94,20 +114,24 @@ public class QuestionsController : MonoBehaviour
 
     public float TimerLap()
     {
-        float questionElapsed = Timer - LastQuestionAnsweredAt;
         LastQuestionAnsweredAt = Timer;
+        float questionElapsed = LastQuestionAnsweredAt - Timer;
         return questionElapsed;
     }
 
     public void EndGame()
     {
-
+        TimerActive = false;
+        
+        //Post result
     }
 
     public void NextQuestion()
     {
+        
         if (QuestionCount > 0)
         {
+            TimerActive = true;
             PokemonQuestion question = questionGen.GetNextQuestion();
             QuestionCount--;
 
@@ -115,7 +139,7 @@ public class QuestionsController : MonoBehaviour
             {
                 case QuestionType.Name:
                 case QuestionType.FlavorText:
-                    //MCQQuestion.GetComponent<FillTextController>().SetQuestion(question);
+                    FillInTheBlankQuestion.GetComponent<FillTextController>().SetQuestion(question);
                     SetActiveQuestionGroup(QuestionGroup.FillInBlank);
                     break;
 

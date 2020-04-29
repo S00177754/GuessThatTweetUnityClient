@@ -9,18 +9,18 @@ public class PokemonAPIQuestionGenerator : MonoBehaviour
     public Queue<PokemonQuestion> Questions;
     static public List<string> EggGroups;
     static public List<string> Generations;
+    public QuestionsController QC;
 
 
     private void Start()
     {
         EggGroups = PokemonAPIHelper.GetEggGroups();
         Generations = PokemonAPIHelper.GetGenerations();
+        Questions = new Queue<PokemonQuestion>();
     }
 
     public void GeneratePokemonQuestions(string pokemonName)
     {
-        ResetQuestions();
-
         PokemonSpeciesDataObject pokeDTO = PokemonAPIHelper.GetPokemon(pokemonName);
         if(pokeDTO != null)
         {
@@ -30,7 +30,8 @@ public class PokemonAPIQuestionGenerator : MonoBehaviour
             QueueQuestion(pokeDTO, QuestionType.Generation);
             QueueQuestion(pokeDTO, QuestionType.PokedexNumber);
             GetComponent<QuestionsController>().SetSprite(pokeDTO.PokedexNumber);
-            GetComponent<QuestionsController>().QuestionCount = 5;
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().SetGameState(GameState.Playing);
+            GetComponent<QuestionsController>().NextQuestion();
         }
     }
 
@@ -47,10 +48,6 @@ public class PokemonAPIQuestionGenerator : MonoBehaviour
         Questions.Enqueue(new PokemonQuestion(dataObj, type));
     }
 
-    public void ResetQuestions()
-    {
-        Questions.Clear();
-    }
     
 }
 

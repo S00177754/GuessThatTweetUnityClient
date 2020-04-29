@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 
     static public GameState GameState;
     public GameObject MenuGroup;
-    public GameObject GamePlayGroup;
+    public QuestionsController GamePlayGroup;
 
 
     private void Start()
@@ -25,12 +25,12 @@ public class GameManager : MonoBehaviour
         {
             case GameState.MainMenu:
                 MenuGroup.SetActive(true);
-                GamePlayGroup.SetActive(true);
+                GamePlayGroup.DeActivate();
                 break;
 
             case GameState.Playing:
-                MenuGroup.SetActive(true);
-                GamePlayGroup.SetActive(true);
+                MenuGroup.SetActive(false);
+                GamePlayGroup.Activate();
                 break;
 
             default:
