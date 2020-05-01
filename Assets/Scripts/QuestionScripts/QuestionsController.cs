@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public enum QuestionGroup { MCQ, PokedexNum, FillInBlank}
+public enum QuestionGroup { MCQ, PokedexNum, FillInBlank, ScoreDisplay}
 
 [RequireComponent(typeof(PokemonAPIQuestionGenerator))]
 public class QuestionsController : MonoBehaviour
@@ -14,6 +15,7 @@ public class QuestionsController : MonoBehaviour
     public GameObject MCQQuestion;
     public GameObject PokedexNumberQuestion;
     public GameObject FillInTheBlankQuestion;
+    public GameObject ScoreDisplay;
     public GameObject ImageDisplay;
     public TMP_Text TimerDisplay;
 
@@ -47,18 +49,28 @@ public class QuestionsController : MonoBehaviour
                 MCQQuestion.SetActive(true);
                 PokedexNumberQuestion.SetActive(false);
                 FillInTheBlankQuestion.SetActive(false);
+                ScoreDisplay.SetActive(false);
                 break;
 
             case QuestionGroup.PokedexNum:
                 MCQQuestion.SetActive(false);
                 PokedexNumberQuestion.SetActive(true);
                 FillInTheBlankQuestion.SetActive(false);
+                ScoreDisplay.SetActive(false);
                 break;
 
             case QuestionGroup.FillInBlank:
                 MCQQuestion.SetActive(false);
                 PokedexNumberQuestion.SetActive(false);
+                ScoreDisplay.SetActive(false);
                 FillInTheBlankQuestion.SetActive(true);
+                break;
+
+            case QuestionGroup.ScoreDisplay:
+                MCQQuestion.SetActive(false);
+                PokedexNumberQuestion.SetActive(false);
+                FillInTheBlankQuestion.SetActive(false);
+                ScoreDisplay.SetActive(true);
                 break;
         }
     }
@@ -76,6 +88,7 @@ public class QuestionsController : MonoBehaviour
         PokedexNumberQuestion.SetActive(false);
         ImageDisplay.SetActive(false);
         TimerDisplay.gameObject.SetActive(false);
+        ScoreDisplay.SetActive(false);
     }
 
     public void SetSprite(int pokedexNum)
@@ -122,8 +135,30 @@ public class QuestionsController : MonoBehaviour
     public void EndGame()
     {
         TimerActive = false;
-        
+        SetActiveQuestionGroup(QuestionGroup.ScoreDisplay);
+        ScoreDisplay.GetComponent<ScoreScreenController>().SetScore(GetTotalScore());
+
         //Post result
+        ASPNetAPIHelper.PostRecord(new GameRecordDTO()
+        {
+            PlayerUsername = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().Username,
+            Score = GetTotalScore(),
+            PokemonName = questionGen.Questions.First().PokemonName,
+            Date = DateTime.Now,
+            CompletionTime = LastQuestionAnsweredAt - Timer,
+       
+
+        }) ;
+    }
+
+    private int GetTotalScore()
+    {
+        int total = 0;
+        foreach (var item in questionGen.Questions)
+        {
+            total += item.Score;
+        }
+        return total;
     }
 
     public void NextQuestion()

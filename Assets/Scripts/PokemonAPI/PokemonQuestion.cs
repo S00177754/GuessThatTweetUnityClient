@@ -13,12 +13,14 @@ public class PokemonQuestion
     public string Answer;
     public List<string> Choices;
     public bool IsMultipleChoice;
-    public float Score;
+    public int Score;
+    public string PokemonName;
 
     public PokemonQuestion(PokemonSpeciesDataObject pokemonObj, QuestionType type)
     {
         QuestionType = type;
         QuestionSetup(pokemonObj, type);
+        PokemonName = pokemonObj.Name;
     }
 
     public void QuestionSetup(PokemonSpeciesDataObject pokeObj, QuestionType type)
@@ -70,7 +72,7 @@ public class PokemonQuestion
 
     public void CalculateScore(float timeElapsed)
     {
-        Score = (1000 - timeElapsed);
+        Score = (1000 - (int)timeElapsed);
     }
 
     public string FormatFlavorText(string text)

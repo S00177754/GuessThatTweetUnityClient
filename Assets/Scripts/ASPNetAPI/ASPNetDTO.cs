@@ -21,7 +21,7 @@ public class GameRecordDTO
 
     public string PlayerUsername;
 
-    public string TwitterUser;
+    public string PokemonName;
 
     public float CompletionTime;
 

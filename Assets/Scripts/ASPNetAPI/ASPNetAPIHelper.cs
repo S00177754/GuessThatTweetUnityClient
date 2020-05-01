@@ -96,6 +96,27 @@ public static class ASPNetAPIHelper
             return false;
         }
     }
+
+    static public GameRecordDTO PostRecord(GameRecordDTO gameRecordDTO)
+    {
+        using (var client = new HttpClient())
+        {
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GameToken);
+
+            var response = client.PostAsJsonAsync(BaseWebAddress + "api/GameData/Records", gameRecordDTO).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Response object is "
+                    + response.Content.ReadAsAsync<GameRecordDTO>(new[] { new JsonMediaTypeFormatter() }).Result.ToString());
+
+                return response.Content.ReadAsAsync<GameRecordDTO>(new[] { new JsonMediaTypeFormatter() }).Result;
+            }
+
+            return null;
+        }
+    }
 }
 
 
