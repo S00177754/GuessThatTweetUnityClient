@@ -17,7 +17,7 @@ public class LoginMenuController : MonoBehaviour
         if (ASPNetAPIHelper.Login(usernameField.text, passwordField.text))
         {
             errorMessage.text = "";
-            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().SetUserDetails(true, usernameField.text);
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().SetUserDetails(true,"");
             MenusController.SetMenuState(MenuState.Game);
         }
         else

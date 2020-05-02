@@ -93,6 +93,7 @@ public class QuestionsController : MonoBehaviour
 
     public void SetSprite(int pokedexNum)
     {
+        
         StartCoroutine(DownloadSprite(pokedexNum));
     }
 
@@ -141,11 +142,10 @@ public class QuestionsController : MonoBehaviour
         //Post result
         ASPNetAPIHelper.PostRecord(new GameRecordDTO()
         {
-            PlayerUsername = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().Username,
             Score = GetTotalScore(),
             PokemonName = questionGen.Questions.First().PokemonName,
             Date = DateTime.Now,
-            CompletionTime = LastQuestionAnsweredAt - Timer,
+            CompletionTime = Timer,
        
 
         }) ;

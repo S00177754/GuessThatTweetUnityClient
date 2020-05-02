@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEditor.PackageManager;
 using static MainMenuController;
 
 public class SignupMenuController : MonoBehaviour

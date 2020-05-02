@@ -18,7 +18,7 @@ public class PNQController : MonoBehaviour
 
     public void SubmitAnswer()
     {
-        if(PokeQuestion.Answer == InputField.text)
+        if(int.Parse(PokeQuestion.Answer.ToLower()) == int.Parse(InputField.text.ToLower()))
         {
             PokeQuestion.CalculateScore(questionController.TimerLap());
         }
@@ -26,6 +26,8 @@ public class PNQController : MonoBehaviour
         {
             PokeQuestion.Score = 0;
         }
+
+        InputField.text = "";
 
         questionController.NextQuestion();
     }

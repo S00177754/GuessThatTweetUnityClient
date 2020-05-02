@@ -24,7 +24,7 @@ public class MCQController : MonoBehaviour
 
     public void SelectAnswer()
     {
-        if(EventSystem.current.currentSelectedGameObject.GetComponentInChildren<TMP_Text>().text == Question.Answer)
+        if(EventSystem.current.currentSelectedGameObject.GetComponentInChildren<TMP_Text>().text.ToLower() == Question.Answer.ToLower())
         {
             Question.CalculateScore(questionController.TimerLap());
         }
@@ -32,6 +32,8 @@ public class MCQController : MonoBehaviour
         {
             Question.Score = 0;
         }
+
+        
 
         questionController.NextQuestion();
     }

@@ -17,7 +17,7 @@ public static class PokemonAPIHelper
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var response = client.GetAsync(BaseWebAddress + "pokemon-species/" + nameOrId).Result;
+            var response = client.GetAsync(BaseWebAddress + "pokemon-species/" + nameOrId.ToLower()).Result;
             var resultContent = response.Content.ReadAsAsync<PokemonSpeciesDataObject>(new[] { new JsonMediaTypeFormatter() }).Result;
 
             return resultContent;
