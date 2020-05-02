@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -14,7 +13,7 @@ public enum AuthenticationStatus { None, Ok, Invalid, Failed }
 
 public static class ASPNetAPIHelper 
 {
-    static public string BaseWebAddress = "https://localhost:44310/";
+    static public string BaseWebAddress = "http://localhost:44310/";
     static public string GameToken = "";
     static public AuthenticationStatus StoreStatus = AuthenticationStatus.None;
     static public string ErrorMessage = "";
@@ -68,6 +67,22 @@ public static class ASPNetAPIHelper
                 return false;
             }
 
+        }
+    }
+
+    static public string GetUsername()
+    {
+        using (var client = new HttpClient())
+        {
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GameToken);
+
+
+            var response = client.GetAsync(BaseWebAddress + "api/Account/UserInfo").Result;
+            var resultContent = response.Content.ReadAsAsync<UserInfoViewModel>(new[] { new JsonMediaTypeFormatter() }).Result;
+
+            return resultContent.Username;
         }
     }
 

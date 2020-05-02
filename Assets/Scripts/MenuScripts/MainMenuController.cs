@@ -13,6 +13,7 @@ public class MainMenuController : MonoBehaviour
     public GameObject SignUpMenu;
     public GameObject GameMenu;
     public GameObject TimeTrialMenu;
+    public QuestionsController QC;
 
     private MenuState menuState;
 
@@ -28,6 +29,7 @@ public class MainMenuController : MonoBehaviour
 
     public void SetMenuState(MenuState state)
     {
+        
         switch (state)
         {
             default:
@@ -38,6 +40,7 @@ public class MainMenuController : MonoBehaviour
                 SignUpMenu.SetActive(false);
                 GameMenu.SetActive(false);
                 TimeTrialMenu.SetActive(false);
+                QC.DeActivate();
                 break;
 
             case MenuState.LogIn:
@@ -47,6 +50,7 @@ public class MainMenuController : MonoBehaviour
                 SignUpMenu.SetActive(false);
                 GameMenu.SetActive(false);
                 TimeTrialMenu.SetActive(false);
+                QC.DeActivate();
                 break;
 
             case MenuState.SignUp:
@@ -56,6 +60,7 @@ public class MainMenuController : MonoBehaviour
                 SignUpMenu.SetActive(true);
                 GameMenu.SetActive(false);
                 TimeTrialMenu.SetActive(false);
+                QC.DeActivate();
                 break;
 
             case MenuState.Game:
@@ -65,6 +70,7 @@ public class MainMenuController : MonoBehaviour
                 SignUpMenu.SetActive(false);
                 GameMenu.SetActive(true);
                 TimeTrialMenu.SetActive(false);
+                QC.DeActivate();
                 break;
 
             case MenuState.TimeTrial:
@@ -76,6 +82,7 @@ public class MainMenuController : MonoBehaviour
                 TimeTrialMenu.SetActive(true);
                 TimeTrialMenu.GetComponent<TimeTrialMenuController>().RandomGame = false;
                 TimeTrialMenu.GetComponent<TimeTrialMenuController>().PokemonNameInput.gameObject.SetActive(true);
+                QC.DeActivate(); 
                 break;
 
             case MenuState.Random:
@@ -87,6 +94,7 @@ public class MainMenuController : MonoBehaviour
                 TimeTrialMenu.SetActive(true);
                 TimeTrialMenu.GetComponent<TimeTrialMenuController>().RandomGame = true;
                 TimeTrialMenu.GetComponent<TimeTrialMenuController>().PokemonNameInput.gameObject.SetActive(false);
+                QC.DeActivate(); 
                 break;
 
             case MenuState.Disable:
@@ -96,9 +104,10 @@ public class MainMenuController : MonoBehaviour
                 SignUpMenu.SetActive(false);
                 GameMenu.SetActive(false);
                 TimeTrialMenu.SetActive(false);
-
+                QC.DeActivate();
                 break;
         }
+        this.gameObject.SetActive(true);
     }
 
     public void SetMenuState(string state)

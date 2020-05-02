@@ -18,14 +18,17 @@ public class FillTextController : MonoBehaviour
 
     public void SubmitAnswer()
     {
-        if (PokeQuestion.Answer == InputField.text)
-        {
-            PokeQuestion.CalculateScore(questionController.TimerLap());
-        }
-        else
-        {
-            PokeQuestion.Score = 0;
-        }
+        
+            if (PokeQuestion.Answer.ToLower() == InputField.text.ToLower())
+            {
+                PokeQuestion.CalculateScore(questionController.TimerLap());
+            }
+            else
+            {
+                PokeQuestion.Score = 0;
+            }
+        
+        InputField.text = "";
 
         questionController.NextQuestion();
     }

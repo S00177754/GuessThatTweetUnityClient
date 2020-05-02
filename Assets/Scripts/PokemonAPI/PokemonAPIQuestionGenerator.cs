@@ -12,8 +12,9 @@ public class PokemonAPIQuestionGenerator : MonoBehaviour
     public QuestionsController QC;
 
 
-    private void Start()
+    private void Setup()
     {
+        GetComponent<QuestionsController>().QuestionCount = 5;
         PokemonAPIHelper.GetMaxRange();
         EggGroups = PokemonAPIHelper.GetEggGroups();
         Generations = PokemonAPIHelper.GetGenerations();
@@ -25,6 +26,7 @@ public class PokemonAPIQuestionGenerator : MonoBehaviour
         PokemonSpeciesDataObject pokeDTO = PokemonAPIHelper.GetPokemon(pokemonName);
         if(pokeDTO != null)
         {
+            Setup();
             QueueQuestion(pokeDTO, QuestionType.Name);
             QueueQuestion(pokeDTO, QuestionType.EggGroup);
             QueueQuestion(pokeDTO, QuestionType.FlavorText);
