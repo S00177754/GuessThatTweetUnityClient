@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MainMenuController : MonoBehaviour
 {
-    public enum MenuState { Disable,StartUp,LogIn,SignUp,Game,TimeTrial}
+    public enum MenuState { Disable,StartUp,LogIn,SignUp,Game,TimeTrial,Random}
 
     public GameObject TitleText;
     public GameObject StartUpMenu;
@@ -74,6 +74,19 @@ public class MainMenuController : MonoBehaviour
                 SignUpMenu.SetActive(false);
                 GameMenu.SetActive(false);
                 TimeTrialMenu.SetActive(true);
+                TimeTrialMenu.GetComponent<TimeTrialMenuController>().RandomGame = false;
+                TimeTrialMenu.GetComponent<TimeTrialMenuController>().PokemonNameInput.gameObject.SetActive(true);
+                break;
+
+            case MenuState.Random:
+                TitleText.SetActive(true);
+                StartUpMenu.SetActive(false);
+                LogInMenu.SetActive(false);
+                SignUpMenu.SetActive(false);
+                GameMenu.SetActive(false);
+                TimeTrialMenu.SetActive(true);
+                TimeTrialMenu.GetComponent<TimeTrialMenuController>().RandomGame = true;
+                TimeTrialMenu.GetComponent<TimeTrialMenuController>().PokemonNameInput.gameObject.SetActive(false);
                 break;
 
             case MenuState.Disable:
@@ -83,6 +96,7 @@ public class MainMenuController : MonoBehaviour
                 SignUpMenu.SetActive(false);
                 GameMenu.SetActive(false);
                 TimeTrialMenu.SetActive(false);
+
                 break;
         }
     }
@@ -110,6 +124,10 @@ public class MainMenuController : MonoBehaviour
 
             case "timetrial":
                 SetMenuState(MenuState.TimeTrial);
+                break;
+
+            case "random":
+                SetMenuState(MenuState.Random);
                 break;
 
             case "disable":

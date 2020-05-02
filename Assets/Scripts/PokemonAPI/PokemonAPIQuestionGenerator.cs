@@ -14,6 +14,7 @@ public class PokemonAPIQuestionGenerator : MonoBehaviour
 
     private void Start()
     {
+        PokemonAPIHelper.GetMaxRange();
         EggGroups = PokemonAPIHelper.GetEggGroups();
         Generations = PokemonAPIHelper.GetGenerations();
         Questions = new Queue<PokemonQuestion>();

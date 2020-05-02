@@ -7,10 +7,18 @@ public class TimeTrialMenuController : MonoBehaviour
 {
     public TMP_InputField PokemonNameInput;
     public PokemonAPIQuestionGenerator questionGen;
-
+    public bool RandomGame = false;
 
     public void StartGame()
     {
-        questionGen.GeneratePokemonQuestions(PokemonNameInput.text);
+        if (!RandomGame)
+        {
+            questionGen.GeneratePokemonQuestions(PokemonNameInput.text);
+        }
+        else
+        {
+            questionGen.GeneratePokemonQuestions(Random.Range(1, PokemonAPIHelper.MaxRange).ToString());
+        }
     }
+
 }
